@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Заборона iOS автоматично перетворювати цифри на посилання (номери телефонів) -->
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
+    <title>Prisma | Digital Marketing</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* БАЗОВІ НАЛАШТУВАННЯ */
+        :root {
+            --bg-color: #050508; 
+            --tg-blue: #3474F0;  
+            --tg-light-blue: #5791E3; /* Світліший синій для цифр */
+            --tg-blue-hover: #265bd4;
+            --text-main: #ffffff;
+            --text-muted: #9aa0a6;
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        html, body { 
+            background-color: var(--bg-color);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden !important; 
+            width: 100%; 
+            max-width: 100vw;
+            position: relative; 
+            -webkit-overflow-scrolling: touch;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        
+        p, h1, h2, h3, div { word-wrap: break-word; overflow-wrap: break-word; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .glass { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow); transition: border-color 0.3s ease; }
+        .glass:hover { border-color: rgba(52, 116, 240, 0.3); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+        /* ШАПКА */
+        header { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 1200px; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 100; border-radius: 100px; background: rgba(255, 255, 255, 0.05); }
+        .logo-wrapper { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff;}
+        .logo-text { font-weight: 800; font-size: clamp(14px, 1.5vw, 20px); letter-spacing: -0.5px; text-transform: uppercase;}
+        .logo-text span { color: var(--tg-blue); font-weight: 800;}
+        
+        nav { display: flex; gap: 30px; }
+        nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 700; transition: color 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+        nav a:hover { color: var(--text-main); }
+
+        /* КНОПКИ */
+        .btn { background: var(--tg-blue); color: #fff; padding: 16px 32px; border-radius: 100px; text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btn:hover { background: var(--tg-blue-hover); box-shadow: 0 0 25px rgba(52, 116, 240, 0.5); }
+        .btn:not(#hero-btn):hover { transform: translateY(-2px); }
+        
+        /* ГЕРОЙ-СЕКЦІЯ */
+        .hero { position: relative; padding: 180px 0 80px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; width: 100%; }
+        .hero-content { width: 100%; max-width: 850px; padding: 60px 40px; text-align: center; margin: 0 auto; } 
+        .hero h1 { font-size: clamp(32px, 4vw, 56px); font-weight: 900; line-height: 1.2; margin-bottom: 24px; text-transform: uppercase; letter-spacing: -1px;}
+        .hero h1 span { color: var(--tg-blue); }
+        .hero p { font-size: clamp(16px, 1.5vw, 18px); color: var(--text-muted); max-width: 550px; margin: 0 auto 40px auto; font-weight: 400; line-height: 1.7;}
+
+        /* МАГНІТНА КНОПКА */
+        #hero-btn { display: inline-block; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s, box-shadow 0.3s; }
+
+        /* СТАТИСТИКА */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; margin-top: 50px;}
+        .stat-card { padding: 30px 10px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: rgba(0, 0, 0, 0.7); border-top: 3px solid var(--tg-blue); border-radius: 30px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); border-top: 3px solid var(--tg-blue); }
+        .stat-num { font-size: clamp(26px, 3vw, 48px); font-weight: 900; background: linear-gradient(135deg, #ffffff 0%, var(--tg-light-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: nowrap; margin-bottom: 8px;}
+        .stat-desc { font-size: 11px; color: var(--text-main); margin-top: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ПОСЛУГИ */
+        section { padding: 80px 0; width: 100%; }
+        .sec-title { font-size: clamp(26px, 4.5vw, 48px); font-weight: 900; margin-bottom: 40px; letter-spacing: -1px; text-transform: uppercase; text-align: center; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .service-card { padding: 40px 30px; display: flex; flex-direction: column; align-items: center; text-align: center; border-radius: 30px; background: linear-gradient(180deg, rgba(9, 16, 36, 0.9) 0%, rgba(31, 80, 192, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.4s ease; }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: #fff; }
+        .highlight-pill { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 6px 18px; border-radius: 12px; margin-bottom: 25px; display: inline-block; font-weight: 800; }
+        .service-card p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 30px; line-height: 1.5;}
+        
+        .btn-white { background: #ffffff; color: #000; width: 100%; padding: 18px; border-radius: 16px; font-weight: 900; text-transform: uppercase; font-size: 14px; text-decoration: none; text-align: center; margin-top: auto; letter-spacing: 1px;}
+
+        /* КЕЙСИ: JS КАРУСЕЛЬ ДЛЯ ТАЧУ */
+        .carousel-wrapper { position: relative; width: 100vw; left: 50%; margin-left: -50vw; overflow: hidden; padding: 20px 0; }
+        
+        .carousel-wrapper::before, .carousel-wrapper::after { content: ""; position: absolute; top: 0; width: 150px; height: 100%; z-index: 2; pointer-events: none; }
+        .carousel-wrapper::before { left: 0; background: linear-gradient(to right, rgba(5,5,8,1) 0%, rgba(5,5,8,0) 100%); }
+        .carousel-wrapper::after { right: 0; background: linear-gradient(to left, rgba(5,5,8,1) 0%, rgba(5,5,8,0) 100%); }
+
+        .carousel-container { display: flex; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-behavior: auto; }
+        .carousel-container::-webkit-scrollbar { display: none; }
+
+        .carousel-group { display: flex; gap: 30px; padding-right: 30px; flex-shrink: 0; }
+
+        .case-card { width: 450px; flex-shrink: 0; padding: 45px; position: relative; background: rgba(10, 10, 10, 0.8); border-radius: 30px; border: 1px solid var(--glass-border); white-space: normal; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .case-card:hover { transform: translateY(-5px); border-color: rgba(52, 116, 240, 0.4); }
+
+        .case-tag { position: absolute; top: 30px; right: 30px; background: rgba(52, 116, 240, 0.2); color: #3474F0; padding: 6px 16px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .case-card h3 { font-size: 24px; font-weight: 800; margin-bottom: 20px; max-width: 85%; line-height: 1.3;}
+        .case-metrics { display: flex; gap: 30px; margin-top: 35px; padding: 25px; background: rgba(0,0,0,0.4); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* НАЛАШТУВАННЯ ЦИФР У КЕЙСАХ */
+        .metric-item span { 
+            display: block; 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: var(--tg-light-blue) !important; /* Світліший синій */
+            line-height: 1; 
+            white-space: nowrap; 
+            text-decoration: none !important; /* Жодного підкреслення */
+        }
+        .metric-item p { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; font-weight: 700; }
+
+        /* ФОРМА */
+        .contact-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; margin-top: 20px; }
+        
+        /* Заголовок МАСШТАБУВАТИСЯ (адаптивний розмір для 2 рядків) */
+        .contact-title { 
+            font-size: clamp(28px, 6vw, 64px); 
+            font-weight: 900; 
+            line-height: 1.2; 
+            margin-bottom: 10px; 
+            white-space: normal; /* Дозволяємо перенесення на 2 рядки */
+        }
+        
+        .contact-desc { color: var(--text-muted); font-size: 16px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .form-container { width: 100%; max-width: 700px; padding: 50px; background: rgba(10, 10, 10, 0.85); border-radius: 35px; border: 1px solid var(--glass-border); text-align: left; margin-top: 20px; }
+        
+        .form-row { display: flex; gap: 20px; margin-bottom: 25px; }
+        .input-group { width: 100%; margin-bottom: 25px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 22px 25px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; color: #fff; font-size: 16px; outline: none; transition: 0.3s; font-family: 'Montserrat', sans-serif; }
+        .input-group textarea { resize: vertical; min-height: 120px; }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--tg-blue); background: rgba(0, 0, 0, 0.8); }
+        ::placeholder { color: rgba(255,255,255,0.4); font-weight: 500; }
+
+        /* ПІДВАЛ */
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; background: rgba(5, 5, 8, 0.6); }
+
+        /* =========================================
+           АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ (ПРАВКИ) 
+           ========================================= */
+        @media (max-width: 992px) {
+            .services-grid { grid-template-columns: 1fr; }
+            header nav { display: none; }
+            .contact-title { text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            /* 2 та 3 пункт: Радикально зменшені відступи */
+            section { padding: 30px 0; } 
+            .sec-title { margin-bottom: 20px; font-size: 28px; } /* Менший відступ під заголовками "Наші кейси" */
+            
+            /* Зменшено відступ зверху до блоку ЕФЕКТИВНЕ ПРОСУВАННЯ */
+            .hero { padding: 100px 0 20px; min-height: auto; }
+            .stats-grid { margin-top: 30px; }
+            
+            /* 1 пункт: Зменшено відступ над ГОТОВІ МАСШТАБУВАТИСЯ */
+            .contact-wrap { margin-top: 0px; }
+            
+            /* Компактна шапка */
+            header { padding: 10px 15px; top: 10px; width: calc(100% - 20px); border-radius: 50px; }
+            .logo-text { font-size: 11px; }
+            .logo-wrapper svg { width: 20px; height: 20px; }
+            header .btn { padding: 10px 18px; font-size: 11px; }
+
+            /* Форма */
+            .form-row { flex-direction: column; gap: 0; margin-bottom: 0; }
+            .carousel-wrapper { padding: 10px 0; } /* Зменшено простір навколо каруселі */
+            .carousel-wrapper::before, .carousel-wrapper::after { width: 40px; }
+
+            /* КЕЙСИ МОБІЛЬНИЙ ВИГЛЯД */
+            .case-card { 
+                width: 320px; 
+                padding: 30px 20px; 
+                text-align: center; 
+            }
+            .case-tag { display: none; }
+            .case-card h3 { 
+                font-size: 20px; 
+                max-width: 100%; 
+                margin-left: auto; 
+                margin-right: auto; 
+            }
+            .case-metrics { 
+                flex-direction: column; 
+                gap: 15px; 
+                padding: 20px 10px; 
+                align-items: center; 
+            }
+            .metric-item span { font-size: 26px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .stat-card { min-height: 100px; padding: 20px 5px; border-radius: 20px; }
+            .stat-num { font-size: 22px; }
+            .stat-desc { font-size: 9px; margin-top: 4px; }
+
+            .hero-content { padding: 20px 15px 40px; } /* Ще компактніше */
+            .form-container { padding: 35px 20px; border-radius: 25px; margin-top: 20px;}
+            .input-group input, .input-group textarea { padding: 18px; font-size: 14px;}
+            .input-group { margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="glass">
+        <a href="#" class="logo-wrapper">
+            <svg width="32" height="32" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="100,100 148,127.6 100,155.2 52,127.6" fill="#1B47A6"/>
+                <polygon points="100,44.8 52,72.4 52,127.6 100,100" fill="#5791E3"/>
+                <polygon points="100,44.8 148,72.4 148,127.6 100,100" fill="#3470D9"/>
+            </svg>
+            <div class="logo-text">Prisma<span> | Digital</span></div>
+        </a>
+        <nav>
+            <a href="#services">Послуги</a>
+            <a href="#cases">Кейси</a>
+        </nav>
+        <a href="#contact" class="btn">Залишити заявку</a>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <div class="fade-up">
+                <div class="hero-content glass">
+                    <h1>ЕФЕКТИВНЕ ПРОСУВАННЯ<br>В <span>TELEGRAM</span></h1>
+                    <p>Більше трьох років стабільно залучаємо аудиторію для наших клієнтів.</p>
+                    <a href="#contact" id="hero-btn" class="btn">Отримати пропозицію</a>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card glass fade-up">
+                    <div class="stat-num">2+ млн</div>
+                    <div class="stat-desc">Залучених підписників</div>
+                </div>
+                <div class="stat-card glass fade-up" style="transition-delay: 0.1s;">
+                    <div class="stat-num">1+ млн $</div>
+                    <div class="stat-desc">Реалізованого бюджету</div>
+                </div>
+                <div class="stat-card glass fade-up" style="transition-delay: 0.2s;">
+                    <div class="stat-num">10+</div>
+                    <div class="stat-desc">Тематик роботи</div>
+                </div>
+                <div class="stat-card glass fade-up" style="transition-delay: 0.3s;">
+                    <div class="stat-num">30+</div>
+                    <div class="stat-desc">Задоволених клієнтів</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services">
+            <h2 class="sec-title fade-up">НАШІ ПОСЛУГИ</h2>
+            <div class="services-grid">
+                <div class="service-card fade-up">
+                    <h3>Закупка реклами в</h3>
+                    <div class="highlight-pill">Telegram-каналах</div>
+                    <p>Підбираємо канали з живою аудиторією та розміщуємо рекламу. Ви отримаєте найкращу ціну.</p>
+                    <a href="#contact" class="btn-white">ДЕТАЛЬНІШЕ</a>
+                </div>
+                <div class="service-card fade-up" style="transition-delay: 0.1s;">
+                    <h3>Офіційна реклама в</h3>
+                    <div class="highlight-pill">Telegram Ads</div>
+                    <p>Запускаємо офіційну рекламу в Telegram. Приводимо цільову аудиторію за інтересами.</p>
+                    <a href="#contact" class="btn-white">ДЕТАЛЬНІШЕ</a>
+                </div>
+                <div class="service-card fade-up" style="transition-delay: 0.2s;">
+                    <h3>Таргетована реклама</h3>
+                    <div class="highlight-pill">Meta Ads</div>
+                    <p>Створюємо креативи та запускаємо рекламу в Instagram/Facebook. Ведемо у ваш канал.</p>
+                    <a href="#contact" class="btn-white">ДЕТАЛЬНІШЕ</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="cases">
+            <h2 class="sec-title fade-up">НАШІ КЕЙСИ</h2>
+            
+            <div class="carousel-wrapper fade-up">
+                <div class="carousel-container" id="cases-carousel">
+                    
+                    <div class="carousel-group" id="cases-group">
+                        <div class="case-card">
+                            <div class="case-tag">Крипто-канал</div>
+                            <h3>Масштабування каналу про криптовалюту</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">За рахунок закупки реклами в інших каналах.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>+59 311</span><p>Підписників</p></div>
+                                <div class="metric-item"><span>4,9 ₴</span><p>Ціна за ПД</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">Telegram-бот</div>
+                            <h3>Запуск трафіку на вебінарну воронку</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Ніша: заробіток в інтернеті. Оптимізували закупівлю в суміжних тематиках.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>11 167</span><p>Лідів</p></div>
+                                <div class="metric-item"><span>0,67 $</span><p>Ціна ліда</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">E-commerce</div>
+                            <h3>Масштабування продажів магазину кросівок</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Запуск таргетованої реклами Meta Ads з переходом у Telegram-магазин.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>4 500</span><p>Нових клієнтів</p></div>
+                                <div class="metric-item"><span>1,2 $</span><p>Ціна за ліда</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">Новини</div>
+                            <h3>Залучення аудиторії в міський паблік</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Використання офіційної реклами Telegram Ads з гео-таргетингом.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>+120 000</span><p>Підписників</p></div>
+                                <div class="metric-item"><span>2,1 ₴</span><p>Ціна за ПД</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">EdTech</div>
+                            <h3>Запуски курсів з англійської мови</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Воронка через безкоштовний марафон у закритому Telegram-каналі.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>8 300</span><p>Лідів</p></div>
+                                <div class="metric-item"><span>0,9 $</span><p>Ціна ліда</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">Геймінг</div>
+                            <h3>Просування каналу про кіберспорт</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Масова закупівля реклами у стрімерів та ігрових спільнотах.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>+35 000</span><p>Підписників</p></div>
+                                <div class="metric-item"><span>3,5 ₴</span><p>Ціна за ПД</p></div>
+                            </div>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-tag">B2B Послуги</div>
+                            <h3>Генерація лідів для юридичної компанії</h3>
+                            <p style="color: var(--text-muted); font-size: 14px;">Залучення підприємців на консультації через авторський блог юриста.</p>
+                            <div class="case-metrics">
+                                <div class="metric-item"><span>850</span><p>Цільових лідів</p></div>
+                                <div class="metric-item"><span>4,5 $</span><p>Ціна ліда</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-wrap">
+                <div class="fade-up" style="width: 100%;">
+                    <!-- Розбивається на 2 рядки завдяки white-space: normal та clamp -->
+                    <h2 class="contact-title">ГОТОВІ МАСШТАБУВАТИСЯ?</h2>
+                    <p class="contact-desc">Залиште заявку. Ми безкоштовно проаналізуємо ваш проєкт та складемо персональний медіаплан.</p>
+                </div>
+                
+                <form id="lead-form" class="form-container fade-up" style="transition-delay: 0.2s;">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <input type="text" id="lead-name" placeholder="Ваше Імʼя" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="lead-contact" placeholder="@Telegram" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="lead-niche" placeholder="Тематика каналу" required>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <textarea id="lead-project" placeholder="Коротко про проєкт" required></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn" style="width: 100%; padding: 24px; font-size: 16px; margin-top: 25px;">Залишити заявку</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <div class="logo-text" style="margin-bottom: 15px;">Prisma<span> | Digital Marketing</span></div>
+            <p style="color: var(--text-muted); font-size: 12px;">© 2026 Всі права захищені.</p>
+        </footer>
+    </div>
+
+    <!-- ОСНОВНИЙ СКРИПТ (SCROLL, MAGNETIC BTN ТА КАРУСЕЛЬ) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Анімація скролу (Fade Up)
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // 2. Магнітна кнопка
+            const magneticBtn = document.getElementById('hero-btn');
+            if (magneticBtn && window.innerWidth > 768) { 
+                document.addEventListener('mousemove', (e) => {
+                    const rect = magneticBtn.getBoundingClientRect();
+                    
+                    if (
+                        e.clientX > rect.left - 80 &&
+                        e.clientX < rect.right + 80 &&
+                        e.clientY > rect.top - 80 &&
+                        e.clientY < rect.bottom + 80
+                    ) {
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        const moveX = (e.clientX - centerX) * 0.3;
+                        const moveY = (e.clientY - centerY) * 0.3;
+                        magneticBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    } else {
+                        magneticBtn.style.transform = `translate(0px, 0px)`;
+                    }
+                });
+
+                document.addEventListener('mouseleave', () => {
+                    magneticBtn.style.transform = `translate(0px, 0px)`;
+                });
+            }
+
+            // 3. Інтелектуальна карусель (Auto-scroll + Swipe)
+            const carousel = document.getElementById('cases-carousel');
+            const group = document.getElementById('cases-group');
+            
+            if (carousel && group) {
+                const clone = group.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true'); 
+                carousel.appendChild(clone);
+
+                let isPaused = false;
+                let scrollSpeed = 1;
+
+                function scrollLoop() {
+                    if (!isPaused) {
+                        carousel.scrollLeft += scrollSpeed;
+                    }
+                    requestAnimationFrame(scrollLoop);
+                }
+
+                carousel.addEventListener('scroll', () => {
+                    if (carousel.scrollLeft >= group.offsetWidth) {
+                        carousel.scrollLeft -= group.offsetWidth;
+                    } 
+                    else if (carousel.scrollLeft <= 0 && isPaused) {
+                        carousel.scrollLeft += group.offsetWidth;
+                    }
+                });
+
+                carousel.addEventListener('touchstart', () => isPaused = true, { passive: true });
+                carousel.addEventListener('touchend', () => isPaused = false);
+                carousel.addEventListener('mouseenter', () => isPaused = true);
+                carousel.addEventListener('mouseleave', () => isPaused = false);
+
+                requestAnimationFrame(scrollLoop);
+            }
+        });
+    </script>
+
+    <!-- СКРИПТ ВІДПРАВКИ В TELEGRAM -->
+    <script>
+        document.getElementById('lead-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const BOT_TOKEN = '8252021139:AAHCi_0llyxD64k25ghnipWFNpQ0ZcQsfB4';
+            const CHAT_ID = '376693532';
+
+            const name = document.getElementById('lead-name').value;
+            const contact = document.getElementById('lead-contact').value;
+            const niche = document.getElementById('lead-niche').value;
+            const project = document.getElementById('lead-project').value;
+            const btn = document.getElementById('submit-btn');
+
+            const originalBtnText = btn.innerText;
+            btn.innerText = 'Відправка...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            const message = `🔔 <b>Нова заявка Prisma!</b>\n\n👤 <b>Ім'я:</b> ${name}\n✈️ <b>Telegram:</b> ${contact}\n🎯 <b>Тематика:</b> ${niche}\n📝 <b>Проєкт:</b> ${project}`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Дякуємо! Ваша заявка успішно відправлена. Ми зв\'яжемося з вами найближчим часом.');
+                    document.getElementById('lead-form').reset(); 
+                } else {
+                    alert('Помилка відправки. Спробуйте пізніше.');
+                }
+            })
+            .catch(error => { alert('Помилка відправки. Перевірте інтернет.'); })
+            .finally(() => {
+                btn.innerText = originalBtnText;
+                btn.style.opacity = '1';
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
